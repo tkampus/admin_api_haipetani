@@ -5,6 +5,16 @@
 @section('link')
 <!-- Custom styles for this page -->
 <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<style>
+   .event-gambar-mini {
+      max-height: 4rem;
+   }
+
+   .event-gambar-max {
+      width: -webkit-fill-available;
+      max-width: -webkit-fill-available;
+   }
+</style>
 @endsection
 
 @section('content')
@@ -64,8 +74,8 @@
                      <td>{{ $key + 1 }}</td>
                      <td>{{$item->username}}</td>
                      <td class="text-center">
-                        <a class="btn-image-event" data-toggle="modal" data-target="#modalgambar" data-id="{{ $item->id }}">
-                           <img class="event-gambar-mini" src="{{ route('getimageprofil', ['role' => 'petani', 'nohp' => $item->nohp ]) }}" alt="">
+                        <a class="btn-image-event" data-toggle="modal" data-target="#modalgambar" data-id="{{ $item->nohp }}">
+                           <img class="event-gambar-mini" src="{{ route('getimgprofil', ['role' => 'petani', 'nohp' => $item->nohp ]) }}" alt="">
                         </a>
                      </td>
                      <td>{{$item->nohp}}</td>
@@ -120,6 +130,21 @@
    </div>
 </div>
 
+<div class="modal fade" id="modalgambar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Event ID : </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <img class="event-gambar-max" src="" alt="">
+         </div>
+      </div>
+   </div>
+</div>
 
 @endsection
 
@@ -143,6 +168,12 @@
 
          // Set action untuk tombol delete pada modal
          $(".form-confirm-delete").attr("value", idToDelete);
+      });
+      $(".btn-image-event").on("click", function() {
+         var idprofil = $(this).data("id");
+         var newSrc = "/getimgprofil:petani:" + idprofil;
+         $(".event-gambar-max").attr("src", newSrc);
+         $(".modal-title").text("Event ID : " + idprofil);
       });
    });
 </script>

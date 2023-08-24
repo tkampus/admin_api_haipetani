@@ -21,15 +21,15 @@ class datasampel extends Seeder
     {
         // data sampel
         $user = [
-            ['nohp' => '081234567890', 'username' => 'user1', 'password' => bcrypt('password1'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '082145678901', 'username' => 'user2', 'password' => bcrypt('password2'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '085678901234', 'username' => 'user10', 'password' => bcrypt('password10'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '083212345678', 'username' => 'user4', 'password' => bcrypt('password4'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '081312345678', 'username' => 'user5', 'password' => bcrypt('password5'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '087612345678', 'username' => 'user6', 'password' => bcrypt('password6'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '085789012345', 'username' => 'user7', 'password' => bcrypt('password7'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '089876543210', 'username' => 'user8', 'password' => bcrypt('password8'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15),],
-            ['nohp' => '082178901234', 'username' => 'user9', 'password' => bcrypt('password9'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15),],
+            ['nohp' => '081234567890', 'username' => 'user1', 'password' => bcrypt('password1'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '082145678901', 'username' => 'user2', 'password' => bcrypt('password2'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '085678901234', 'username' => 'user10', 'password' => bcrypt('password10'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '083212345678', 'username' => 'user4', 'password' => bcrypt('password4'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '081312345678', 'username' => 'user5', 'password' => bcrypt('password5'), 'role' => 'petani', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '087612345678', 'username' => 'user6', 'password' => bcrypt('password6'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '085789012345', 'username' => 'user7', 'password' => bcrypt('password7'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '089876543210', 'username' => 'user8', 'password' => bcrypt('password8'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
+            ['nohp' => '082178901234', 'username' => 'user9', 'password' => bcrypt('password9'), 'role' => 'ahli', 'remember_token' => 'token_' . Str::random(15), 'jeniskelamin' => 'laki-laki', 'tanggallahir' => date('Y-m-d'),],
             // admin
             ['nohp' => 'superadmin@haipetani.com', 'username' => 'Super Admin', 'password' => bcrypt('123'), 'role' => 'admin', 'remember_token' => 'token_' . Str::random(15),],
 
@@ -82,13 +82,16 @@ class datasampel extends Seeder
 
         // eksekusi
         foreach ($user as $data) {
-            user::create($data);
+            $userData = collect($data)->except('jeniskelamin', 'tanggallahir')->toArray();
+            user::create($userData);
             switch ($data['role']) {
                 case 'petani':
-                    $petani = u_petani::create(collect($data)->only('nohp')->toArray());
+                    $petaniData = collect($data)->only('nohp', 'jeniskelamin', 'tanggallahir')->toArray();
+                    $petani = u_petani::create($petaniData);
                     break;
                 case 'ahli':
-                    $ahli = u_ahli::create(collect($data)->only('nohp')->toArray());
+                    $ahliData = collect($data)->only('nohp', 'jeniskelamin', 'tanggallahir')->toArray();
+                    $ahli = u_ahli::create($ahliData);
                     break;
             }
         }

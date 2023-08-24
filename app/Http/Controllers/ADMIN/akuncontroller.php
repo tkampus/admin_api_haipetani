@@ -74,9 +74,7 @@ class akuncontroller extends Controller
         // buat akun
         $gambar = $req->file('gambar');
         if ($gambar) {
-            $gambarStream = fopen($gambar->getRealPath(), 'rb');
-            $input['gambar'] = fread($gambarStream, filesize($gambar->getRealPath()));
-            fclose($gambarStream);
+            $input['gambar'] = $this->saveimg('profil', $gambar);
         }
         // buat tabel data user
         try {
@@ -92,11 +90,12 @@ class akuncontroller extends Controller
                     return back();
                     break;
             }
+            $user = User::create($input);
         } catch (Exception $e) {
-            Session::flash('error', ['error' => 'Terjadi kesalahan saat menyimpan gambar']);
+            Session::flash('error', ['error' => 'Terjadi kesalahan saat menyimpan data']);
+            return $e->getMessage();
             return back();
         }
-        $user = User::create($input);
         Session::flash('success', ['create' => 'User register successfully!']);
         return back();
     }
@@ -234,14 +233,13 @@ class akuncontroller extends Controller
                     'tanggallahir' => $input['tanggallahir'] ?? date('Y-m-d'),
                     'alamat' => $input['alamat'] ?? ''
                 ];
+                $dataUpdate = u_petani::where('nohp', $input['nohp'])->first();
                 $gambar = $req->file('gambar');
                 if ($gambar) {
-                    $gambarStream = fopen($gambar->getRealPath(), 'rb');
-                    $data['gambar'] = fread($gambarStream, filesize($gambar->getRealPath()));
-                    fclose($gambarStream);
+                    $data['gambar'] = $this->saveimg('profil', $gambar, $dataUpdate->gambar);
                 }
                 try {
-                    $uPetani = u_petani::where('nohp', $input['nohp'])->update($data);
+                    $dataUpdate->update($data);
                 } catch (Exception $e) {
                     Session::flash('error', ['error' => 'Terjadi kesalahan saat menyimpan gambar']);
                     return back();
@@ -262,13 +260,12 @@ class akuncontroller extends Controller
                     'kantor' => $input['kantor'] ?? '',
                 ];
                 $gambar = $req->file('gambar');
+                $dataUpdate = u_ahli::where('nohp', $input['nohp'])->first();
                 if ($gambar) {
-                    $gambarStream = fopen($gambar->getRealPath(), 'rb');
-                    $data['gambar'] = fread($gambarStream, filesize($gambar->getRealPath()));
-                    fclose($gambarStream);
+                    $data['gambar'] = $this->saveimg('profil', $gambar, $dataUpdate->gambar);
                 }
                 try {
-                    $uAhli = u_ahli::where('nohp', $input['nohp'])->update($data);
+                    $dataUpdate->update($data);
                 } catch (Exception $e) {
                     Session::flash('error', ['error' => 'Terjadi kesalahan saat menyimpan gambar']);
                     return back();
@@ -320,6 +317,7 @@ class akuncontroller extends Controller
             Session::flash('error', ['error' => 'User dengan ID tersebut tidak ditemukan.']);
             return back();
         }
+        $this->delimg($userToDelete->gambar);
         $userToDelete->delete();
 
         Session::flash('success', ['User' => 'User berhasil dihapus.']);

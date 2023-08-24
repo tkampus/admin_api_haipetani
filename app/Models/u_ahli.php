@@ -9,6 +9,7 @@ class u_ahli extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'nohp',
         'gambar',
         'email',

@@ -81,19 +81,6 @@ class profilController extends BaseController
         // return $profil;
         $gambar = $req->file('gambar');
         if ($gambar) {
-            // ================================================== disimpan binray di badabase
-            // $gambarStream = fopen($gambar->getRealPath(), 'rb');
-            // $profil['gambar'] = fread($gambarStream, filesize($gambar->getRealPath()));
-            // fclose($gambarStream);
-            // =================================================== disipan di storage web api
-            // if ($data['gambar']) {
-            //     if ($profil['gmabar']) {
-            //         Storage::delete($profil['gambar']);
-            //     }
-            // }
-            // $gambar = $req->file('gambar');
-            // $namaGambar = Str::random(30) . '.' . $gambar->getClientOriginalExtension();
-            // $path = $gambar->storeAs('public/gambar/profil', $namaGambar);
             $data['gambar'] = $this->saveimg('profil', $req->file('gambar'), $profil['gambar']);
             // ==================================================
 

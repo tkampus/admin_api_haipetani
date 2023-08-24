@@ -9,6 +9,7 @@ class u_petani extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'nohp',
         'gambar',
         'email',

@@ -5,6 +5,7 @@
 @section('link')
 <!-- Custom styles for this page -->
 <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 @endsection
 
 @section('content')
@@ -79,7 +80,7 @@
                      <div class="form-group col-md-8">
                         <label for="inputjeniskelamin">Jenis kelamin</label>
                         <select id="inputjeniskelamin" name="jeniskelamin" class="form-control">
-                           <option selected value="laki-laki">Laki-laki</option>
+                           <option value="laki-laki">Laki-laki</option>
                            <option value="perempuan">perempuan</option>
                         </select>
                      </div>
