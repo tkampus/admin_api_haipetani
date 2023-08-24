@@ -212,7 +212,6 @@ class akuncontroller extends Controller
             'kantor' => 'nullable',
         ]);
         if ($validator->fails()) {
-            // return var_dump($validator->errors());
             Session::flash('error', $validator->errors()->toArray());
             return back();
         }
@@ -293,7 +292,6 @@ class akuncontroller extends Controller
             Session::flash('error', $validator->errors()->toArray());
             return back();
         }
-        // return $input;
         // Logika untuk memeriksa apakah l-password benar
         $user = User::where('nohp', $req->nohp)->first();
         if (!Hash::check($req->input('l-password'), $user->password)) {
@@ -317,31 +315,18 @@ class akuncontroller extends Controller
             Session::flash('error', ['error' => 'User dengan ID tersebut tidak ditemukan.']);
             return back();
         }
-        $this->delimg($userToDelete->gambar);
-        $userToDelete->delete();
-
-        Session::flash('success', ['User' => 'User berhasil dihapus.']);
-        return back();
-    }
-    public function getImageprofil($role, $nohp)
-    {
-        switch ($role) {
+        switch ($userToDelete->role) {
             case 'petani':
-                $data = u_petani::where('nohp', $nohp)->first();
+                $data = u_petani::where('nohp', $userToDelete->nohp)->first();
                 break;
             case 'ahli':
-                $data = u_ahli::where('nohp', $nohp)->first();
-                break;
-            default:
-                return 'gambar tidak ditemukan';
+                $data = u_ahli::where('nohp', $userToDelete->nohp)->first();
                 break;
         }
-        if ($data->gambar == null) {
-            return 'belum pernah upload gambar';
-        }
-        return Response::make($data->gambar, 200, [
-            'Content-Type' => 'image/jpeg',
-            'Content-Disposition' => 'inline; filename="' . $data->judul . '.jpeg"',
-        ]);
+        $this->delimg($data->gambar);
+        $userToDelete->delete();
+        $data->delete();
+        Session::flash('success', ['User' => 'User berhasil dihapus.']);
+        return back();
     }
 }
