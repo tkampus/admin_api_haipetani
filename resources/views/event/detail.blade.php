@@ -27,7 +27,7 @@
          </h2>
          <div>
             <button type="submit" class="mb-2 btn btn-primary">Update Event</button>
-            @if($active)
+            @if(!$active)
             <a href="{{route('updateeventactive', ['id' => $data->id])}}" class="mb-2 btn btn-info">Jadikan Active</a>
             @endif
          </div>
@@ -37,7 +37,7 @@
          <input type="hidden" name="id" value="{{$data->id}}">
          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Event</h6>
-            @if(!$active)
+            @if($active)
             <span class="badge badge-success">Active</span>
             @endif
          </div>
@@ -58,7 +58,7 @@
                   </div>
                </div>
                <div class="col-4 text-center border align-middle">
-                  <img class="event-gambar-max" for="inputgambar" src="{{ route('getimage', ['id' => $data->id]) }}" alt="">
+                  <img class="event-gambar-max" for="inputgambar" src="{{ route('getimgevent', ['id' => $data->id]) }}" alt="">
                </div>
             </div>
             <div class="form-group">

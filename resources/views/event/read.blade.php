@@ -72,7 +72,7 @@
                      </td>
                      <td class="text-center">
                         <a class="btn-image-event" data-toggle="modal" data-target="#modalgambar" data-id="{{ $item->id }}">
-                           <img class="event-gambar-mini" src="{{ route('getimage', ['id' => $item->id]) }}" alt="">
+                           <img class="event-gambar-mini" src="{{ route('getimgevent', ['id' => $item->id]) }}" alt="">
                         </a>
                      </td>
                      <td>{{ $item->conten }}</td>
@@ -133,7 +133,7 @@
             </button>
          </div>
          <div class="modal-body">
-            <img class="event-gambar-max" src="{{ route('getimage', '0') }}" alt="">
+            <img class="event-gambar-max" src="" alt="">
          </div>
       </div>
    </div>
@@ -165,7 +165,7 @@
       });
       $(".btn-image-event").on("click", function() {
          var idimage = $(this).data("id");
-         var newSrc = "/Image_Event:" + idimage;
+         var newSrc = "/getimgevent:" + idimage;
          $(".event-gambar-max").attr("src", newSrc);
          $(".modal-title").text("Event ID : " + idimage);
       });

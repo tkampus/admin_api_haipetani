@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('nohp')->unique();
             // $table->binary('gambar')->nullable();
             $table->string('gambar')->nullable();
-            $table->string('email');
-            $table->string('nik');
-            $table->string('jeniskelamin');
-            $table->date('tanggallahir');
-            $table->string('alamat');
+            $table->string('email')->nullable();
+            $table->string('nik')->nullable();
+            $table->string('jeniskelamin')->nullable();
+            $table->date('tanggallahir')->nullable();
+            $table->string('alamat')->nullable();
             $table->timestamps();
         });
     }

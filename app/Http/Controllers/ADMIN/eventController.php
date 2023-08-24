@@ -49,11 +49,7 @@ class eventController extends Controller
             Session::flash('error', $validator->errors()->toArray());
             return back();
         }
-
-        $imagePath = $req->file('gambar')->getPathname();
-        $imageData = file_get_contents($imagePath);
-
-        // return $validatedData;
+        $imageData = $this->saveimg('event', $req->file('gambar'));
         try {
             event::create([
                 'judul' => $input['judul'],
@@ -66,19 +62,11 @@ class eventController extends Controller
                 'error',
                 ['error' => 'Terjadi kesalahan saat menyimpan gambar']
             );
+            $this->delimg($imageData);
             return back();
         }
         Session::flash('success', ['Create Event' => 'Berhasil membuat event baru']);
         return back();
-    }
-    // image event
-    public function getimage($id)
-    {
-        $event = event::find($id);
-        return Response::make($event->gambar, 200, [
-            'Content-Type' => 'image/jpeg',
-            'Content-Disposition' => 'inline; filename="' . $event->judul . '.jpeg"',
-        ]);
     }
     // detail event
     public function detailevent($id)
@@ -95,7 +83,10 @@ class eventController extends Controller
         }
 
         $active = false; // Defaultnya tidak aktif
-        $latestEvent = Event::latest('id')->first();
+        $evntterakhir = Event::max('id');
+        if ($evntterakhir == $id) {
+            $active = true;
+        }
 
         $backurl = [
             'url' => url()->previous(),
@@ -150,18 +141,15 @@ class eventController extends Controller
 
         // Cek apakah ada gambar yang di-upload
         if ($req->hasFile('gambar')) {
-            $imagePath = $req->file('gambar')->getPathname();
-            $imageData = file_get_contents($imagePath);
-            $eventData['gambar'] = $imageData;
+            $eventData['gambar'] = $this->saveimg('event', $req->file('gambar'), $event->gambar);
         }
 
         try {
             // Update data event dengan data yang sudah disiapkan
             $event->update($eventData);
-
             Session::flash('success', ['Update Event' => 'Berhasil mengupdate event.']);
             return back();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Session::flash('error', ['error' => 'Gagal mengupdate event.', 'gambar' => 'Gambar yang diinputkan bermasalah!']);
             return back();
         }
@@ -173,6 +161,7 @@ class eventController extends Controller
         if (!$eventToDelete) {
             return redirect()->back()->with('error', ['error' => 'Event dengan ID tersebut tidak ditemukan.']);
         }
+        $this->delimg($eventToDelete->gambar);
         $eventToDelete->delete();
 
         return redirect()->back()->with('success', ['Delete ' => 'Event berhasil dihapus.']);

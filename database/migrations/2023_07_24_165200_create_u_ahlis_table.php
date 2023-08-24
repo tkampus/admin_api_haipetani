@@ -16,17 +16,17 @@ return new class extends Migration
             $table->string('nohp')->unique();
             // $table->binary('gambar')->nullable();
             $table->string('gambar')->nullable();
-            $table->string('email');
-            $table->string('nik');
-            $table->string('jeniskelamin');
-            $table->date('tanggallahir');
-            $table->string('alamat');
+            $table->string('email')->nullable();
+            $table->string('nik')->nullable();
+            $table->string('jeniskelamin')->nullable();
+            $table->date('tanggallahir')->nullable();
+            $table->string('alamat')->nullable();
             // ahli
-            $table->string('nip');
-            $table->float('bintang', 2, 1);
-            $table->string('keahlian1');
-            $table->string('keahlian2');
-            $table->string('kantor');
+            $table->string('nip')->nullable();
+            $table->float('bintang', 2, 1)->nullable();
+            $table->string('keahlian1')->nullable();
+            $table->string('keahlian2')->nullable();
+            $table->string('kantor')->nullable();
             $table->timestamps();
         });
     }
