@@ -32,7 +32,6 @@ class profilController extends BaseController
                 break;
         }
         // return $user;
-        // return $user;
         $profil['username'] = $user->username;
         if ($profil['gambar'] != null) {
             $profil['gambar'] = route('getimgprofil', ['nohp' => $profil['nohp'], 'role' => $user['role'], 'update' => $user['updated_at']]);
@@ -95,7 +94,7 @@ class profilController extends BaseController
         }
         // return 
         $profil['nohp'] = $user['nohp'];
-        $profil['gambar'] = route('getimgprofil', ['nohp' => $user['nohp'], 'role' => $user['role']]);
+        $profil['gambar'] = route('getimgprofil', ['nohp' => $user['nohp'], 'role' => $user['role'], 'update' => $user['updated_at']]);
         return $this->sendResponse($profil, 'Update profil successfully!');
     }
 }
