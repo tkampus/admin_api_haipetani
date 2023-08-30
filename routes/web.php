@@ -25,7 +25,7 @@ use App\Http\Controllers\ADMIN\eventController;
 
 route::get('getimgevent:{id}', [linkcontroller::class, 'getimgevent'])->name('getimgevent');
 route::get('getimgchat:{id}', [linkcontroller::class, 'getimgchat'])->name('getimgchat');
-route::get('getimgprofil:{role}:{nohp}', [linkcontroller::class, 'getimgprofil'])->name('getimgprofil');
+route::get('getimgprofil:{role}:{nohp}:{update}', [linkcontroller::class, 'getimgprofil'])->name('getimgprofil');
 
 
 

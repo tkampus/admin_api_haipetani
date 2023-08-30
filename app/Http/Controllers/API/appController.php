@@ -51,12 +51,14 @@ class appController extends BaseController
     public function masuk(Request $req): JsonResponse
     {
         // validasi
-        if (Auth::attempt(
-            [
-                'nohp' => $req->nohp,
-                'password' => $req->password
-            ]
-        )) {
+        if (
+            Auth::attempt(
+                [
+                    'nohp' => $req->nohp,
+                    'password' => $req->password
+                ]
+            )
+        ) {
             $user = Auth::user();
             $success['token'] = $user->createToken($user->remember_token)->plainTextToken;
             $success['username'] = $user->username;

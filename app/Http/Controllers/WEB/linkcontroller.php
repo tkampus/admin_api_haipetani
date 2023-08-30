@@ -24,7 +24,7 @@ class linkcontroller extends Controller
                 ->header('Content-Type', 'image/jpeg')
                 ->header('Content-Disposition', 'inline; filename="' . $chat->id . '.jpeg"');
         } else {
-            return abort(404); 
+            return abort(404);
         }
     }
     public function getimgevent($id)
@@ -38,10 +38,10 @@ class linkcontroller extends Controller
                 ->header('Content-Type', 'image/jpeg')
                 ->header('Content-Disposition', 'inline; filename="' . $event->judul . '.jpeg"');
         } else {
-            return abort(404); 
+            return abort(404);
         }
     }
-    public function getimgprofil($role, $nohp)
+    public function getimgprofil($role, $nohp, $update)
     {
         switch ($role) {
             case 'petani':
@@ -65,7 +65,7 @@ class linkcontroller extends Controller
                 ->header('Content-Type', 'image/jpeg')
                 ->header('Content-Disposition', 'inline; filename="' . $data->nohp . '.jpeg"');
         } else {
-            return abort(404); 
+            return abort(404);
         }
     }
 }

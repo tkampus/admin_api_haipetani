@@ -17,7 +17,7 @@ use App\Http\Controllers\API\BaseController;
 
 class profilController extends BaseController
 {
-    public function get(Request $req): JsonResponse
+    public function get(Request $req)
     {
         $user = Auth::user();
         switch ($user['role']) {
@@ -32,9 +32,10 @@ class profilController extends BaseController
                 break;
         }
         // return $user;
+        // return $user;
         $profil['username'] = $user->username;
         if ($profil['gambar'] != null) {
-            $profil['gambar'] =  route('getimgprofil', ['nohp' => $profil['nohp'], 'role' => $user['role']]);
+            $profil['gambar'] = route('getimgprofil', ['nohp' => $profil['nohp'], 'role' => $user['role'], 'update' => $user['updated_at']]);
         }
         return $this->sendResponse($profil);
     }
